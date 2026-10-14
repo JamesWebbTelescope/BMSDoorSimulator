@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- Wokwi project diagram configuration in diagram.json
 - Wokwi simulation configuration via wokwi.toml for ESP32-S3 firmware
 - VSCode PlatformIO debug configurations in .vscode/launch.json
 - VSCode C/C++ IntelliSense configuration in .vscode/c_cpp_properties.json
