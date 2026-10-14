@@ -124,3 +124,60 @@ are milliseconds since boot (rendered as RFC3339-like strings in the API).
 **Consequences:** Bounded memory, no dynamic allocation in the hot path.
 The history only covers the last 20 transitions; longer history would need
 persistent storage (deliberately out of scope).
+
+## 7. Credential management: environment file for secrets
+
+**Date:** 2026-10-14
+**Status:** Accepted
+
+**Context:** Per project requirements, all secrets including WiFi name and
+password must be kept in a local environment file rather than hardcoded in
+source files. This prevents accidental credential commits and enables
+easier configuration across different environments.
+
+**Decision:** Use a `.env` file in the project root with simple key-value
+format. Create a parser utility (`EnvParser`) that reads this file at startup
+and overrides default credentials from `config.h`. The `.env` file is added
+to `.gitignore`; an example template `.env.example` is committed for reference.
+
+**Consequences:** Improved security by keeping credentials out of version
+control. The parser must handle missing files gracefully by falling back to
+`config.h` defaults. Requires one-time manual file creation for new users.
+
+## 8. Status visualization: LED indicators for door state
+
+**Date:** 2026-10-14
+**Status:** Accepted
+
+**Context:** Physical feedback for door status is required. Per requirements,
+LED indicators should show: GREEN for OPEN, YELLOW for OPENING/CLOSED,
+RED for CLOSED.
+
+**Decision:** Connect three LEDs to GPIO pins 1 (GREEN), 2 (YELLOW), 3 (RED)
+using ACTIVE HIGH logic. Create a `DoorLedIndicator` class that manages these
+LEDs and updates them based on the current `DoorState`. Only one LED is
+active at a time. The LED manager is initialized in `setup()` and updated
+in `loop()` or on state changes.
+
+**Consequences:** Requires hardware assembly (LEDs + resistors + breadboard).
+The door state machine (`DoorSim`) remains decoupled from LED logic, maintaining
+testability. GPIO pins 1, 2, 3 were chosen as they are typically available on
+ESP32-S3 and don't conflict with core functionality.
+
+## 9. Testing interface: separate Python project
+
+**Date:** 2026-10-14
+**Status:** Accepted
+
+**Context:** A separate project is needed to test the simulator by sending
+commands and verifying responses. This enables automated testing without
+modifying the embedded firmware.
+
+**Decision:** Create a Python project in the `/tests` subfolder that uses
+the `requests` library to connect to the simulator's HTTP API. The project
+includes: a client class (`door_client.py`), test scripts (`test_simulator.py`),
+example usage (`example_usage.py`), and documentation (`README.md`).
+
+**Consequences:** Enables easy testing and integration with CI/CD pipelines.
+The Python project is separate from the firmware, allowing independent updates.
+Requires Python 3.8+ and the `requests` library.

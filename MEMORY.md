@@ -81,3 +81,32 @@ Added two documentation files:
 - Keep placeholder credentials/IDs in `include/config.h`; never commit
   real credentials.
 - Verify changes with both `pio run` and the native test build.
+
+### 4. Prototype development plan — this change
+
+Created comprehensive development plan for implementing new features from
+plan.txt requirements document.
+
+**Features planned:**
+- F1: Environment file support for WiFi secrets
+- F2: LED status indicators (GPIO 1, 2, 3 with ACTIVE HIGH)
+- F3: Python testing project in /tests folder
+
+**Files added:**
+- `docs/PROTOTYPE_DEVELOPMENT_PLAN.md` — Complete development plan with
+  executive summary, confirmed features, development roadmap, testing matrix,
+  risk assessment, and next steps
+
+**Decisions documented:**
+- DECISIONS.md entries 7, 8, 9 added for credential management, LED indicators,
+  and Python testing interface
+
+**User confirmations:**
+- All three features confirmed for implementation
+- .env file location: project root
+- .env file: added to .gitignore
+- LED behavior: ACTIVE HIGH (non-configurable)
+- LED pins: GPIO 1 (GREEN), 2 (YELLOW), 3 (RED)
+- Python project location: /tests subfolder
+
+**Next action:** Begin implementation with F1 (Environment File Support)

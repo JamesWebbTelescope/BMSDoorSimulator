@@ -1,0 +1,3 @@
+All secrets, including WiFI name and password, must be kept in a local environment file, which is to be read when the project starts.
+Door status is to be indicated by LED indicators: GREEN for OPEN, YELLOW for OPENING/CLOSED, RED for CLOSED.
+A separate Python project will connect to the simulator and provide a testing interface for sending commands to the simulator.

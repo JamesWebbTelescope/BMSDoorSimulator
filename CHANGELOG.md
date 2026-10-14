@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - VSCode PlatformIO debug configurations in .vscode/launch.json
 - VSCode C/C++ IntelliSense configuration in .vscode/c_cpp_properties.json
 - PlatformIO IDE extension recommendation in .vscode/extensions.json
+- Prototype development plan document in docs/PROTOTYPE_DEVELOPMENT_PLAN.md
+- DECISIONS.md entries 7, 8, 9 for credential management, LED indicators, and Python testing interface
+- MEMORY.md section 4 documenting prototype development plan and confirmed features
 
 ## 0.1.0 - 2026-10-14
 
