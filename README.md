@@ -4,6 +4,28 @@ Simulates a door device as it would be seen by a Siemens Building X BMS.
 Receives door commands over the local network and returns statuses with
 realistic travel delays. No connection to the actual Siemens BMS is made.
 
+## Project structure
+
+```
+BMSDoorSimulator/
+├── platformio.ini              # PlatformIO build config (ESP32-S3, Arduino framework)
+├── include/                    # Public headers
+│   ├── config.h                # Wi-Fi credentials, point/partition IDs, timing delays
+│   ├── DoorSim.h               # Door state machine interface (states, history)
+│   ├── DoorApiServer.h        # Local HTTP API server interface
+│   └── millis64.h              # 64-bit millisecond counter declaration
+├── src/                        # Firmware sources
+│   ├── main.cpp                # Entry point: Wi-Fi join, door init, HTTP loop
+│   ├── DoorSim.cpp             # Door simulation: travel, apply-delay, hold/resume logic
+│   └── DoorApiServer.cpp      # Routes: PATCH point (command), GET point, GET values
+├── test/
+│   ├── test_door_logic.cpp    # Native (host) unit tests for the state machine
+│   └── stubs/                  # Minimal Arduino.h/ArduinoJson.h stubs for native build
+│       ├── Arduino.h
+│       └── ArduinoJson.h
+└── README.md
+```
+
 ## Build & flash
 
 Requires [PlatformIO](https://platformio.org/).
