@@ -1,1 +1,7 @@
 .pio/
+.env
+.env.*
+
+# PlatformIO data directory - contains environment files
+# Don't ignore the directory itself, but its contents should be managed carefully
+data/.env

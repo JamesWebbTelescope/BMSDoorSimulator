@@ -110,3 +110,65 @@ plan.txt requirements document.
 - Python project location: /tests subfolder
 
 **Next action:** Begin implementation with F1 (Environment File Support)
+
+### 5. Phase 1: Environment File Support — Feature F1 Implementation
+
+**Date:** 2026-10-14
+**Phase:** 1 (Foundation)
+**Feature:** F1 - Environment File for Secrets
+
+Implemented environment file support for WiFi credential management to keep
+secrets out of version control and enable easier configuration across
+different environments.
+
+**Files added:**
+- `include/EnvParser.h` — Environment parser class header with methods for
+  parsing .env file content, reading from filesystem (LittleFS on ESP32),
+  and retrieving key-value pairs
+- `src/EnvParser.cpp` — Implementation of EnvParser class supporting:
+  - `parseContent()`: Parse .env content from a string (for testing)
+  - `readFile()`: Read and parse .env file from LittleFS on ESP32
+  - Key-value pair extraction with whitespace trimming
+  - Comment handling (lines starting with #)
+  - Graceful fallback for missing files and keys
+- `test/test_env_parser.cpp` — Native unit tests for EnvParser with 15 test
+  scenarios covering: empty content, simple key-value pairs, whitespace
+  trimming, comments, empty lines, missing keys, values with spaces,
+  CRLF line endings, empty keys, lines without equals, clear and re-parse,
+  multiple equals in values, tab characters, empty values, and full .env
+  file parsing
+- `.env.example` — Template file in project root with usage instructions
+- `data/.env` — Default environment file for PlatformIO upload
+- `data/.env.example` — Template for data directory
+
+**Files modified:**
+- `.gitignore` — Added `.env`, `.env.*`, and `data/.env` patterns to prevent
+  credential commits
+- `platformio.ini` — Added `board_build.filesystem = littlefs` to enable
+  LittleFS support for environment file storage
+- `include/config.h` — Added `ENV_FILE_PATH` define (`"/.env"`) for default
+  environment file path, and LED pin definitions for future use
+- `src/main.cpp` — Integrated EnvParser into setup() to:
+  - Initialize LittleFS
+  - Read environment file at startup
+  - Override WiFi credentials from .env if present
+  - Fall back to config.h defaults on errors
+  - Log credential source to serial for debugging
+
+**Behavior changes:**
+- WiFi credentials can now be loaded from `/data/.env` on the ESP32 device
+- Parser gracefully handles missing files by falling back to config.h defaults
+- Parser handles missing keys by falling back to config.h defaults
+- Parser trims whitespace from keys and values
+- Parser ignores comments (lines starting with #) and empty lines
+
+**Verified by:**
+- Native unit tests compile and pass (15 test scenarios in test_env_parser.cpp)
+- Code structure verified for all files
+- Integration with existing WiFi connection logic confirmed
+- Fallback behavior confirmed for missing files and keys
+
+**Dependencies:**
+- Requires LittleFS support on ESP32 (enabled in platformio.ini)
+- PlatformIO uploads data/.env to LittleFS on the device
+- User must create .env file in data/ directory with their credentials

@@ -181,3 +181,84 @@ example usage (`example_usage.py`), and documentation (`README.md`).
 **Consequences:** Enables easy testing and integration with CI/CD pipelines.
 The Python project is separate from the firmware, allowing independent updates.
 Requires Python 3.8+ and the `requests` library.
+
+## 10. Environment file storage: LittleFS on ESP32
+
+**Date:** 2026-10-14
+**Phase:** 1 (Environment File Support)
+**Status:** Accepted
+
+**Context:** The .env file needs to be stored on the ESP32 device and read at
+runtime. ESP32 has several filesystem options: SPIFFS, LittleFS, and wear
+leveling (Wear Leveling) library.
+
+**Decision:** Use LittleFS (Little Filesystem) for environment file storage
+on ESP32. LittleFS is the newer, more robust replacement for SPIFFS and is
+recommended for new projects. PlatformIO has built-in support for LittleFS
+via the `board_build.filesystem = littlefs` configuration.
+
+**Consequences:**
+- Added `board_build.filesystem = littlefs` to platformio.ini
+- EnvParser reads from LittleFS at path `/.env`
+- Environment files must be placed in the `data/` directory for PlatformIO
+  to upload them to the device
+- `.gitignore` excludes `data/.env` to prevent credential leaks
+- Native tests cannot test file reading (stubbed to return false), but
+  can test parsing logic via `parseContent()` method
+
+## 11. Environment parser design: String-based parsing with filesystem support
+
+**Date:** 2026-10-14
+**Phase:** 1 (Environment File Support)
+**Status:** Accepted
+
+**Context:** The EnvParser needs to work both on the ESP32 device (reading from
+LittleFS) and in native tests (where filesystem is not available). The
+parser must handle .env file format with KEY=VALUE pairs, comments, and
+whitespace.
+
+**Decision:** Create EnvParser class with two parsing methods:
+1. `parseContent(String)`: Parses .env content from a string for testing
+2. `readFile(const char*)`: Reads and parses from LittleFS on ESP32
+
+The class supports:
+- Whitespace trimming from keys and values
+- Comment lines starting with `#`
+- Empty lines
+- Multiple equals signs in values (first `=` separates key from value)
+- Both LF and CRLF line endings
+- Maximum of 32 key-value pairs (bounded memory usage)
+- Graceful fallback to defaults for missing files and keys
+
+**Consequences:**
+- Native tests can fully test parsing logic without filesystem access
+- ESP32 firmware reads from LittleFS at startup
+- Memory usage is bounded (32 pairs max)
+- Error handling is graceful (falls back to config.h defaults)
+
+## 12. Credential override mechanism: Runtime override with compile-time fallback
+
+**Date:** 2026-10-14
+**Phase:** 1 (Environment File Support)
+**Status:** Accepted
+
+**Context:** WiFi credentials are defined in config.h as preprocessor macros,
+but need to be overridable by values from .env file at runtime. Macros are
+evaluated at compile-time, so runtime override requires a different approach.
+
+**Decision:** Use String variables for WiFi credentials that are initialized
+from .env file values, with fallback to config.h macro values. The
+main.cpp setup() function:
+1. Initializes LittleFS
+2. Attempts to read .env file
+3. If successful and keys exist, uses .env values
+4. Otherwise falls back to config.h macro values
+
+The WiFi connection is made using these String variables rather than directly
+using the macros.
+
+**Consequences:**
+- Credentials can be set at runtime from .env file
+- Compile-time defaults still work if .env is missing
+- Build flags (-DWIFI_SSID=xxx) still work as fallback
+- No hardcoded credentials in source files

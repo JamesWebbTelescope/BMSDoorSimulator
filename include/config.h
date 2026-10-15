@@ -1,7 +1,7 @@
 #pragma once
 
-// Wi-Fi credentials. Replace with your local network settings or set them
-// at build time via -D flags. The device runs as a station (client).
+// Wi-Fi credentials. These can be overridden at runtime by values from .env file
+// or set at build time via -D flags.
 #ifndef WIFI_SSID
 #define WIFI_SSID "BMS-SIM"
 #endif
@@ -29,3 +29,11 @@
 
 // Maximum number of state transitions kept in the history buffer.
 #define DOOR_HISTORY_MAX 20
+
+// Environment file path in LittleFS
+#define ENV_FILE_PATH "/.env"
+
+// LED pin definitions for status indicators
+#define LED_GREEN_PIN 1    // GREEN LED for OPEN state
+#define LED_YELLOW_PIN 2   // YELLOW LED for OPENING/CLOSED states
+#define LED_RED_PIN 3      // RED LED for CLOSED state
