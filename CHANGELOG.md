@@ -26,8 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `.gitignore` to exclude .env, .env.*, and data/.env files
 - `.vscode/c_cpp_properties.json` to add LittleFS include path and reorganize library paths
+- `.vscode/c_cpp_properties.json` to update PlatformIO version from 60119 to 60200
+- `.vscode/extensions.json` to add pioarduino.pioarduino-ide to unwanted recommendations
 - `src/main.cpp` to integrate EnvParser, initialize LittleFS, and override WiFi credentials from .env file
 - `include/config.h` to support runtime credential override from .env file
+- `test/test_env_parser.cpp` to remove redundant using ::LittleFS directive
 - `DECISIONS.md` with decisions 10, 11, 12 documenting environment file storage, parser design, and credential override mechanism
 - `MEMORY.md` with section 5 documenting Phase 1: Environment File Support implementation
 

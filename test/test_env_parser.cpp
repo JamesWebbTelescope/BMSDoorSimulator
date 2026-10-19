@@ -84,8 +84,6 @@ namespace LittleFS {
   bool begin() { return false; }
 }
 
-using ::LittleFS;
-
 #define DOOR_TRAVEL_TIME_MS 5000
 #define COMMAND_APPLY_DELAY_MS 1000
 #define DOOR_HISTORY_MAX 20
