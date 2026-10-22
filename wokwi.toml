@@ -1,4 +1,6 @@
 [wokwi]
 version = 1
-firmware = '.pio/build/esp32s3/firmware.bin'
+firmware = '.pio/build/esp32s3/firmware.merged.bin'
 elf = '.pio/build/esp32s3/firmware.elf'
+data = 'data'
+env = '.env'

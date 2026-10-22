@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- Partition table file `app3M_spiffs9M_fact512k_16MB.csv` for custom 16MB flash layout
+- Firmware merge script `merge_firmware.py` for combining binary and LittleFS outputs
+- Wokwi configuration: merged firmware path (`firmware.merged.bin`), data directory, and env file support
+
+### Changed
+- PlatformIO platform from `espressif32` to custom URL for latest Espressif32
+- PlatformIO board from `esp32-s3-devkitc-1` to `arduino_nano_esp32`
+- PlatformIO: added partition table, upload protocol (esptool), upload speed (921600), and merge script hook
+- PlatformIO: added Wokwi paramType configuration block for board visualization
+- `.vscode/c_cpp_properties.json`: updated partition from `default` to `app3M_spiffs9M_fact512k_16MB`
+
+## 0.1.0 - 2026-10-14
+
+### Added
+- Initial ESP32-S3 BMS door simulator implementation
+- Project structure and documentation
 - Environment parser class in `include/EnvParser.h` and `src/EnvParser.cpp` for reading .env files
 - Unit tests for EnvParser in `test/test_env_parser.cpp` with 15 test scenarios
 - LittleFS filesystem support via `board_build.filesystem = littlefs` in platformio.ini
@@ -33,9 +49,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `test/test_env_parser.cpp` to remove redundant using ::LittleFS directive
 - `DECISIONS.md` with decisions 10, 11, 12 documenting environment file storage, parser design, and credential override mechanism
 - `MEMORY.md` with section 5 documenting Phase 1: Environment File Support implementation
-
-## 0.1.0 - 2026-10-14
-
-### Added
-- Initial ESP32-S3 BMS door simulator implementation
-- Project structure and documentation
