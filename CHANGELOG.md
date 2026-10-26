@@ -8,16 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-- Partition table file `app3M_spiffs9M_fact512k_16MB.csv` for custom 16MB flash layout
-- Firmware merge script `merge_firmware.py` for combining binary and LittleFS outputs
-- Wokwi configuration: merged firmware path (`firmware.merged.bin`), data directory, and env file support
+- `package.json` with npm scripts for build, upload, and monitor
+- `.vscode/settings.json` with PlatformIO and file exclusion settings
 
 ### Changed
-- PlatformIO platform from `espressif32` to custom URL for latest Espressif32
-- PlatformIO board from `esp32-s3-devkitc-1` to `arduino_nano_esp32`
-- PlatformIO: added partition table, upload protocol (esptool), upload speed (921600), and merge script hook
-- PlatformIO: added Wokwi paramType configuration block for board visualization
-- `.vscode/c_cpp_properties.json`: updated partition from `default` to `app3M_spiffs9M_fact512k_16MB`
+- PlatformIO platform from custom URL to standard `espressif32`
+- PlatformIO board from `arduino_nano_esp32` to `esp32-s3-devkitc-1`
+- PlatformIO: removed upload_protocol and upload_speed settings
+- PlatformIO: added `board_build.flash_size = 16MB`
+- PlatformIO: added `lib_ignore = data` to exclude data directory from build
+- `merge_firmware.py`: added `from SCons.Script import Import` for PlatformIO integration
+- `wokwi.toml`: added [esp32] section with flash_size and paramType configuration (moved from platformio.ini)
+
+### Removed
+- `.vscode/c_cpp_properties.json` (replaced by settings.json)
+- `.vscode/extensions.json`
+- `.vscode/launch.json`
 
 ## 0.1.0 - 2026-10-14
 

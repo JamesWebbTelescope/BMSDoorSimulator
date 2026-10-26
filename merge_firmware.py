@@ -1,5 +1,6 @@
 # PlatformIO extra script: merge bootloader + partition table + app into one image
 # that Wokwi can load (.pio/build/<env>/firmware.merged.bin).
+from SCons.Script import Import
 Import("env")
 from os.path import join, isfile
 

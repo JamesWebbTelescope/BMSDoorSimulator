@@ -1,0 +1,27 @@
+{
+  "name": "bms-door-simulator",
+  "version": "1.0.0",
+  "description": "BMS Door Simulator (ESP32-S3) - Simulates a door device for Siemens Building X BMS",
+  "private": true,
+  "scripts": {
+    "build": "pio run",
+    "upload": "pio run --target upload",
+    "monitor": "pio device monitor"
+  },
+  "keywords": [
+    "esp32",
+    "arduino",
+    "platformio",
+    "bms",
+    "simulator",
+    "embedded",
+    "wokwi"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

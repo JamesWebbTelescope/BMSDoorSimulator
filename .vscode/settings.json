@@ -1,0 +1,14 @@
+{
+  "[json]": {
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.pio": true
+  },
+  "platformio-ide.useDevelopmentPIOCore": false
+}
